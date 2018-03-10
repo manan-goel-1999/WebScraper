@@ -8,6 +8,7 @@ BOOKURL = ["Not Available" for x in range(100)]
 AUTHORS = ["Not Available" for x in range(100)]
 RATINGS = ["Not Available" for x in range(100)]
 PRICES = ["Not Available" for x in range(100)]
+NOFRATINGS = ["Not Available" for x in range(100)]
 
 BOOKTYPE = ['Paperback', 'Hardcover', 'Cards', 'Mass Market Paperback']
 
@@ -45,7 +46,17 @@ def scrape():
 
             x = children.find_all('span', {'class' : 'p13n-sc-price'})
             for z in x:
-                PRICES[i] = z.text[3:]
+                PRICES[i] = z.text[3:].replace(',','')
+
+            x = children.find_all('a', {'class' : 'a-link-normal'})
+            for z in x:
+                z = z.get('title')
+                if z is not None:
+                    RATINGS[i] = z.replace(',','')
+
+            x = children.find_all('a', {'class' : 'a-size-small a-link-normal'})
+            for z in x:
+                NOFRATINGS[i] = z.text.replace(',','')
 
             i += 1
 
@@ -53,3 +64,8 @@ def scrape():
     return i
 
 number = scrape()
+#print(NOFRATINGS)
+outfile = open("in_book.csv","w")
+outfile.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
+for j in range(number):
+    outfile.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]) + ',' + str(PRICES[j]) + ',' + str(NOFRATINGS[j]) + ',' + str(RATINGS[j]) + "\n")
