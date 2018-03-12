@@ -1,5 +1,6 @@
 """This Module Scrapes amazon.com for bestsellers"""
 import requests
+import os
 from bs4 import BeautifulSoup
 
 NAMES = ["Not Available" for x in range(100)]
@@ -20,7 +21,7 @@ def scrape():
     while pagenum <= 5:
         ur_l = "https://www.amazon.com/best-sellers-books-Amazon/zgbs/books/ref=zg_bs_pg_"
         ur_l += str(pagenum) + "?_encoding=UTF8&pg=" + str(pagenum) + "&ajax=1"
-        
+
         try:
             ht_ml = requests.get(ur_l)
         except requests.exceptions.ConnectionError:
@@ -57,7 +58,7 @@ def scrape():
 
             child = children.find_all('span', {'class' : 'p13n-sc-price'})
             for children_data in child:
-                PRICES[i] = children_data.text[3:].replace(',', '')
+                PRICES[i] = children_data.text.replace(',', '')
 
             child = children.find_all('a', {'class' : 'a-link-normal'})
             for children_data in child:
@@ -79,7 +80,11 @@ internetconnection = 0
 NUMBER,internetconnection = scrape()
 
 if internetconnection is not 1:
-    OUTFILE = open("./output/com_book.csv", "w")
+    try:
+        OUTFILE = open("./output/com_book.csv", "w")
+    except OSError:
+        os.system("mkdir ./output")
+        OUTFILE = open("./output/com_book.csv", "w")
     OUTFILE.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
     for j in range(NUMBER):
         OUTFILE.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]))

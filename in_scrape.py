@@ -1,5 +1,6 @@
 """This Module Scrapes amazon.in for bestsellers"""
 import requests
+import os
 from bs4 import BeautifulSoup
 
 NAMES = ["Not Available" for x in range(100)]
@@ -77,7 +78,11 @@ internetconnection = 0
 NUMBER,internetconnection = scrape()
 
 if internetconnection is not 1:
-    OUTFILE = open("./output/in_book.csv", "w")
+    try:
+        OUTFILE = open("./output/com_book.csv", "w")
+    except OSError:
+        os.system("mkdir ./output")
+        OUTFILE = open("./output/com_book.csv", "w")
     OUTFILE.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
     for j in range(NUMBER):
         OUTFILE.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]))
