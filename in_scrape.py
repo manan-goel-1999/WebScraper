@@ -15,10 +15,17 @@ def scrape():
     """ Scrape Through BestSellers on amazon and give their names, links, prices and ratings"""
     pagenum = 1
     i = 0
+    check = 0
     while pagenum <= 5:
         ur_l = "https://www.amazon.in/gp/bestsellers/books/ref=zg_bs_pg_" + str(pagenum)
         ur_l += "?ie=UTF8&pg=" + str(pagenum) + "&ajax=1"
-        ht_ml = requests.get(ur_l)
+
+        try:
+            ht_ml = requests.get(ur_l)
+        except:
+            print("Please Check Internet Connection")
+            check = 1
+            break
 
         ht_ml = ht_ml.text
 
@@ -64,12 +71,14 @@ def scrape():
             i += 1
 
         pagenum += 1
-    return i
+    return i,check
 
-NUMBER = scrape()
+internetconnection = 0
+NUMBER,internetconnection = scrape()
 
-OUTFILE = open("./output/in_book.csv", "w")
-OUTFILE.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
-for j in range(NUMBER):
-    OUTFILE.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]))
-    OUTFILE.write(',' + str(PRICES[j]) + ',' + str(NOFRATINGS[j]) + ',' + str(RATINGS[j]) + "\n")
+if internetconnection is not 1:
+    OUTFILE = open("./output/in_book.csv", "w")
+    OUTFILE.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
+    for j in range(NUMBER):
+        OUTFILE.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]))
+        OUTFILE.write(',' + str(PRICES[j]) + ',' + str(NOFRATINGS[j]) + ',' + str(RATINGS[j]) + "\n")
