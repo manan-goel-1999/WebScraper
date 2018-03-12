@@ -20,10 +20,10 @@ def scrape():
     while pagenum <= 5:
         ur_l = "https://www.amazon.com/best-sellers-books-Amazon/zgbs/books/ref=zg_bs_pg_"
         ur_l += str(pagenum) + "?_encoding=UTF8&pg=" + str(pagenum) + "&ajax=1"
-
+        
         try:
             ht_ml = requests.get(ur_l)
-        except:
+        except requests.exceptions.ConnectionError:
             check = 1
             print("Please Check Internet Connection")
             break
