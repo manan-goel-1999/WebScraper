@@ -57,7 +57,7 @@ def scrape():
 
             child = children.find_all('span', {'class' : 'p13n-sc-price'})
             for children_data in child:
-                PRICES[i] = children_data.text[3:].replace(',', '')
+                PRICES[i] = children_data.text.replace(',', '')
 
             child = children.find_all('a', {'class' : 'a-link-normal'})
             for children_data in child:
@@ -79,10 +79,10 @@ NUMBER,internetconnection = scrape()
 
 if internetconnection is not 1:
     try:
-        OUTFILE = open("./output/com_book.csv", "w")
+        OUTFILE = open("./output/in_book.csv", "w")
     except OSError:
         os.system("mkdir ./output")
-        OUTFILE = open("./output/com_book.csv", "w")
+        OUTFILE = open("./output/in_book.csv", "w")
     OUTFILE.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
     for j in range(NUMBER):
         OUTFILE.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]))
