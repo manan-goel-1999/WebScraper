@@ -22,7 +22,7 @@ def scrape():
 
         try:
             ht_ml = requests.get(ur_l)
-        except:
+        except requests.exceptions.ConnectionError:
             print("Please Check Internet Connection")
             check = 1
             break
