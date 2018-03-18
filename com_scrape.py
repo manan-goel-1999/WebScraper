@@ -87,6 +87,6 @@ if internetconnection is not 1:
         OUTFILE = open("./output/com_book.csv", "w")
     OUTFILE.write("Name,URL,Author,Price,Number of Ratings,Average Rating\n")
     for j in range(NUMBER):
-        OUTFILE.write(str(NAMES[j]) + ',' + str(BOOKURL[j]) + ',' + str(AUTHORS[j]))
-        OUTFILE.write(',' + str(PRICES[j]) + ',' + str(NOFRATINGS[j]) + ',' + str(RATINGS[j]) + "\n")
+        OUTFILE.write(str(NAMES[j]) + ';' + str(BOOKURL[j]) + ';' + str(AUTHORS[j]))
+        OUTFILE.write(';' + str(PRICES[j]) + ';' + str(NOFRATINGS[j]) + ';' + str(RATINGS[j]) + "\n")
     OUTFILE.close()
